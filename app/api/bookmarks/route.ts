@@ -26,34 +26,33 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    // Insert the new bookmark
+    // Insert the new restaurant
     await db.insert(restaurants).values({
-      url: body.url,
-      title: body.title,
+      name: body.title || body.name,
       slug: body.slug,
       description: body.description || null,
+      url: body.url || null,
       categoryId: body.categoryId || null,
-      overview: body.overview || null,
+      address: body.address || null,
+      phone: body.phone || null,
+      priceRange: body.priceRange || null,
+      cuisine: body.cuisine || null,
+      openingHours: body.openingHours || null,
+      coverImage: body.coverImage || body.ogImage || null,
       favicon: body.favicon || null,
-      screenshot: body.screenshot || null,
-      ogImage: body.ogImage || null,
-      ogTitle: body.ogTitle || null,
-      ogDescription: body.ogDescription || null,
-      notes: body.notes || null,
-      tags: body.tags || null,
       isArchived: body.isArchived || false,
-      isFavorite: body.isFavorite || false,
-      search_results: body.search_results || null,
+      isFeatured: body.isFeatured || false,
+      notes: body.notes || null,
     });
 
     return NextResponse.json(
-      { message: "Bookmark created successfully" },
+      { message: "Restaurant created successfully" },
       { status: 201 },
     );
   } catch (error) {
-    console.error("Error creating bookmark:", error);
+    console.error("Error creating restaurant:", error);
     return NextResponse.json(
-      { error: "Failed to create bookmark" },
+      { error: "Failed to create restaurant" },
       { status: 500 },
     );
   }
