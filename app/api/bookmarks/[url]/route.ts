@@ -1,23 +1,22 @@
-import { NextResponse } from "next/server";
-import { db } from "@/db/client";
-import { bookmarks } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { db } from "@/db";
+import { restaurants } from "@/db/schema";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function DELETE(
-  request: Request,
-  { params }: { params: { url: string } },
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { url: string } }
 ) {
   try {
     const decodedUrl = decodeURIComponent(params.url);
-
-    await db.delete(bookmarks).where(eq(bookmarks.url, decodedUrl));
-
-    return NextResponse.json({ message: "Bookmark deleted successfully" });
+    
+    // Your implementation here
+    
+    return NextResponse.json({ message: "Not implemented yet" });
   } catch (error) {
-    console.error("Error deleting bookmark:", error);
+    console.error(error);
     return NextResponse.json(
-      { error: "Failed to delete bookmark" },
-      { status: 500 },
+      { error: "Internal server error" },
+      { status: 500 }
     );
   }
 }

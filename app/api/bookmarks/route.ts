@@ -1,16 +1,23 @@
-import { NextResponse } from "next/server";
-import { db } from "@/db/client";
-import { bookmarks } from "@/db/schema";
+import { db } from "@/db";
+import { restaurants } from "@/db/schema";
+import { boho } from "@/lib/boho";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const allBookmarks = await db.select().from(bookmarks);
-    return NextResponse.json(allBookmarks);
+    const allRestaurants = await db.query.restaurants.findMany({
+      orderBy: (restaurants, { desc }) => [desc(restaurants.createdAt)],
+      with: {
+        category: true,
+      },
+    });
+    
+    return NextResponse.json(allRestaurants);
   } catch (error) {
-    console.error("Error fetching bookmarks:", error);
+    console.error(error);
     return NextResponse.json(
-      { error: "Failed to fetch bookmarks" },
-      { status: 500 },
+      { error: "Internal server error" },
+      { status: 500 }
     );
   }
 }
@@ -20,7 +27,7 @@ export async function POST(request: Request) {
     const body = await request.json();
 
     // Insert the new bookmark
-    await db.insert(bookmarks).values({
+    await db.insert(restaurants).values({
       url: body.url,
       title: body.title,
       slug: body.slug,
