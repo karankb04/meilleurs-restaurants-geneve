@@ -34,11 +34,12 @@ export const restaurants = sqliteTable("restaurants", {
   reservationLink: text("reservation_link"),
   
   // Organization
-  categoryId: text("category_id").references(() => categories.id), // For cuisine types
+  categoryId: integer("category_id").references(() => categories.id), // For cuisine types
   tags: text("tags"), // Features like "outdoor seating", "takeout", etc.
 
   // Media
   coverImage: text("cover_image"), // Main restaurant image
+  favicon: text("favicon"),
   gallery: text("gallery"), // JSON string of image URLs
   menuUrl: text("menu_url"), // Link to menu
   
@@ -52,12 +53,12 @@ export const restaurants = sqliteTable("restaurants", {
   neighborhood: text("neighborhood"),
   
   // Timestamps
-  createdAt: integer("created_at", { mode: "timestamp" })
+  createdAt: text("created_at")
     .notNull()
-    .default(sql`(unixepoch())`),
-  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: text("updated_at")
     .notNull()
-    .default(sql`(unixepoch())`),
+    .default(sql`CURRENT_TIMESTAMP`),
   
   // Additional fields
   notes: text("notes"), // Admin notes
@@ -66,6 +67,8 @@ export const restaurants = sqliteTable("restaurants", {
     .default(false),
   isFeatured: integer("is_featured", { mode: "boolean" })
     .notNull()
+    .default(false),
+  isPopular: integer("is_popular", { mode: "boolean" })
     .default(false),
 });
 

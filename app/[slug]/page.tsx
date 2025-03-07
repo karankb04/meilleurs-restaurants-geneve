@@ -122,9 +122,9 @@ export default async function Page({ params }: Props) {
                   </p>
                 )}
               </div>
-              {restaurant.image ? (
+              {restaurant.favicon ? (
                 <img
-                  src={restaurant.image}
+                  src={restaurant.favicon}
                   alt="Site favicon"
                   width={16}
                   height={16}

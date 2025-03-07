@@ -6,39 +6,34 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, MapPin } from "lucide-react";
 
-export function SearchBar() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [location, setLocation] = useState("");
+interface SearchBarProps {
+  placeholder?: string;
+  className?: string;
+}
+
+export function SearchBar({ placeholder = "Search...", className = "" }: SearchBarProps) {
+  const [query, setQuery] = useState("");
   const router = useRouter();
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (searchTerm) {
-      router.push(`/restaurants?search=${encodeURIComponent(searchTerm)}`);
+    
+    if (query.trim()) {
+      router.push(`/search?q=${encodeURIComponent(query)}`);
     }
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto">
-      <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-3">
+    <div className={`w-full max-w-xl ${className}`}>
+      <form onSubmit={handleSubmit} className="flex items-center gap-2">
         <div className="relative flex-grow">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
-            type="text"
-            placeholder="Rechercher des restaurants, cuisines ou plats..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 h-12 rounded-full bg-white/90 backdrop-blur-sm border-transparent"
-          />
-        </div>
-        <div className="relative md:w-1/3">
-          <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            type="text"
-            placeholder="Quartier de Genève"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            className="pl-10 h-12 rounded-full bg-white/90 backdrop-blur-sm border-transparent"
+            type="search"
+            placeholder={placeholder}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="h-12 rounded-full pl-10 pr-4"
           />
         </div>
         <Button type="submit" className="h-12 rounded-full px-8 bg-primary">
