@@ -5,11 +5,12 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await boho.verifyAuth(request);
+    // Temporarily bypass authentication for development
+    // const session = await boho.verifyAuth(request);
     
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    // if (!session) {
+    //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // }
     
     const body = await request.json();
     const { restaurantId, collectionId } = body;
