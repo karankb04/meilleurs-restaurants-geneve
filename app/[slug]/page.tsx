@@ -38,7 +38,6 @@ export async function generateMetadata(
   return {
     title: restaurant.name,
     description: restaurant.description || undefined,
-    url: restaurant.url || undefined,
     images: [
       ...(restaurant.ogImage ? [restaurant.ogImage] : []),
       ...previousImages,
