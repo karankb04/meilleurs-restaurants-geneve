@@ -24,17 +24,13 @@ export function RestaurantCard({ restaurant }: RestaurantCardProps) {
           />
         ) : (
           <div className="w-full h-full bg-muted flex items-center justify-center">
-            <span className="text-muted-foreground">Pas d'image</span>
+            <span className="text-muted-foreground">No image</span>
           </div>
         )}
       </div>
       
-      <CardContent className="pt-6 pb-2">
-        <h3 className="text-xl font-semibold mb-1">{restaurant.name}</h3>
-        
-        {restaurant.category && (
-          <p className="text-sm text-muted-foreground mb-3">{restaurant.category.name}</p>
-        )}
+      <CardContent className="py-4 flex-grow">
+        <h3 className="text-lg font-semibold mb-2">{restaurant.name}</h3>
         
         {restaurant.address && (
           <div className="flex items-center text-sm text-muted-foreground mb-3">

@@ -42,16 +42,13 @@ export async function generateMetadata(
       title: restaurant.name,
       description: restaurant.description || undefined,
       url: restaurant.url || undefined,
-      images: [
-        ...(restaurant.ogImage ? [restaurant.ogImage] : []),
-        ...previousImages,
-      ],
+      images: restaurant.coverImage ? [restaurant.coverImage] : previousImages,
     },
     twitter: {
       card: "summary_large_image",
       title: restaurant.name,
       description: restaurant.description || undefined,
-      images: restaurant.ogImage ? [restaurant.ogImage] : [],
+      images: restaurant.coverImage ? [restaurant.coverImage] : [],
     },
   };
 }
@@ -70,24 +67,30 @@ export default async function Page({ params }: Props) {
         <div className="flex items-center justify-between">
           <BackButton />
           <Button variant="outline" size="sm" asChild>
-            <Link
-              href={restaurant.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group gap-2"
-            >
-              <span>Visit Website</span>
-              <ExternalLink className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
+            {restaurant.url ? (
+              <Link
+                href={restaurant.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group gap-2"
+              >
+                <span>Visit Website</span>
+                <ExternalLink className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            ) : (
+              <span className="group gap-2">
+                <span>No Website</span>
+              </span>
+            )}
           </Button>
         </div>
 
         {/* Preview Image or Fallback */}
         <div className="overflow-hidden rounded-xl border bg-muted">
           <div className="relative aspect-[21/9]">
-            {restaurant.ogImage ? (
+            {restaurant.coverImage ? (
               <img
-                src={restaurant.ogImage}
+                src={restaurant.coverImage}
                 alt="Open Graph preview"
                 width={300}
                 height={200}
@@ -119,9 +122,9 @@ export default async function Page({ params }: Props) {
                   </p>
                 )}
               </div>
-              {restaurant.favicon ? (
+              {restaurant.image ? (
                 <img
-                  src={restaurant.favicon}
+                  src={restaurant.image}
                   alt="Site favicon"
                   width={16}
                   height={16}
@@ -163,7 +166,7 @@ export default async function Page({ params }: Props) {
           </div>
 
           {/* Overview Section */}
-          {restaurant.overview && (
+          {restaurant.description && (
             <div className="prose prose-gray max-w-none dark:prose-invert">
               <div className="rounded-xl bg-accent/50 p-6">
                 <h2 className="mt-0 flex items-center gap-2 text-xl font-semibold">
@@ -186,7 +189,7 @@ export default async function Page({ params }: Props) {
                     ),
                   }}
                 >
-                  {restaurant.overview}
+                  {restaurant.description}
                 </Markdown>
               </div>
             </div>
@@ -199,15 +202,21 @@ export default async function Page({ params }: Props) {
             <Link href="/">Browse More</Link>
           </Button>
           <Button asChild size="lg">
-            <Link
-              href={restaurant.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group gap-2"
-            >
-              Visit Website
-              <ExternalLink className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
-            </Link>
+            {restaurant.url ? (
+              <Link
+                href={restaurant.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group gap-2"
+              >
+                Visit Website
+                <ExternalLink className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            ) : (
+              <span className="group gap-2">
+                No Website Available
+              </span>
+            )}
           </Button>
         </div>
       </div>
