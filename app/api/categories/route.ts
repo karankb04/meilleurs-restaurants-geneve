@@ -1,12 +1,15 @@
 import { db } from "@/db";
 import { categories } from "@/db/schema";
-import { nanoid } from "nanoid";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
-    // Temporarily bypass authentication
-    console.log("Processing category creation request");
+    // Temporarily bypass authentication for development
+    // const session = await boho.verifyAuth(request);
+    
+    // if (!session) {
+    //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // }
     
     const body = await request.json();
     const { name, description, slug, icon, color } = body;
@@ -20,16 +23,11 @@ export async function POST(request: NextRequest) {
     
     const normalizedSlug = slug || name.toLowerCase().replace(/\s+/g, "-");
     
-    console.log("Creating category with data:", {
-      name,
-      description,
-      slug: normalizedSlug,
-      icon,
-      color
-    });
+    // Generate a random ID without nanoid
+    const randomId = Math.random().toString(36).substring(2, 15);
     
     const newCategory = await db.insert(categories).values({
-      id: nanoid(),
+      id: randomId, // Use our simple random ID instead of nanoid
       name,
       description: description || null,
       slug: normalizedSlug,
@@ -37,13 +35,11 @@ export async function POST(request: NextRequest) {
       color: color || null,
     }).returning();
     
-    console.log("Category created successfully:", newCategory[0]);
     return NextResponse.json(newCategory[0]);
   } catch (error) {
-    console.error("Error in POST /api/categories:", error);
-    console.error("Error stack:", error.stack);
+    console.error(error);
     return NextResponse.json(
-      { error: "Internal server error", details: String(error) },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }
