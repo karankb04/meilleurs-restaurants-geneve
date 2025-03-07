@@ -67,7 +67,7 @@ export async function GET(request: NextRequest) {
     
     if (featured === 'true') {
       const featuredRestaurants = await query.findMany({
-        where: (restaurants, { eq }) => eq(restaurants.isFeatured, 1),
+        where: (restaurants, { eq }) => eq(restaurants.isFeatured, true),
         with: {
           category: true,
         },
