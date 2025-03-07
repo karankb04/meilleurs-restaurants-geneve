@@ -38,10 +38,6 @@ export async function generateMetadata(
   return {
     title: restaurant.name,
     description: restaurant.description || undefined,
-    images: [
-      ...(restaurant.ogImage ? [restaurant.ogImage] : []),
-      ...previousImages,
-    ],
     openGraph: {
       title: restaurant.name,
       description: restaurant.description || undefined,
