@@ -4,8 +4,8 @@ import * as schema from "./schema";
 
 // Initialize the Turso/LibSQL client
 const client = createClient({
-  url: process.env.DATABASE_URL || "file:./sqlite.db",
-  authToken: process.env.DATABASE_AUTH_TOKEN,
+  url: process.env.TURSO_DATABASE_URL || "file:./sqlite.db",
+  authToken: process.env.TURSO_AUTH_TOKEN,
 });
 
 // Create the database connection
