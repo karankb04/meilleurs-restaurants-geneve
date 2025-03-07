@@ -28,18 +28,25 @@ export async function generateMetadata(
   const restaurant = await getRestaurantBySlug(params.slug);
 
   if (!restaurant) {
-    notFound();
+    return {
+      title: "Restaurant not found",
+    };
   }
 
-  const previousImages = (await parent).openGraph?.images || [];
+  const previousImages = (await parent)?.openGraph?.images || [];
 
   return {
     title: restaurant.name,
-    description: restaurant.description,
+    description: restaurant.description || undefined,
+    url: restaurant.url || undefined,
+    images: [
+      ...(restaurant.ogImage ? [restaurant.ogImage] : []),
+      ...previousImages,
+    ],
     openGraph: {
       title: restaurant.name,
       description: restaurant.description || undefined,
-      url: restaurant.url,
+      url: restaurant.url || undefined,
       images: [
         ...(restaurant.ogImage ? [restaurant.ogImage] : []),
         ...previousImages,
