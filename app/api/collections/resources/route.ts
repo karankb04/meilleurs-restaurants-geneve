@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { resources, collectionResources } from "@/db/schema";
+import { restaurantCollections } from "@/db/schema";
 import { boho } from "@/lib/boho";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -13,17 +13,17 @@ export async function POST(request: NextRequest) {
     // }
     
     const body = await request.json();
-    const { resourceId, collectionId } = body;
+    const { restaurantId, collectionId } = body;
     
-    if (!resourceId || !collectionId) {
+    if (!restaurantId || !collectionId) {
       return NextResponse.json(
-        { error: "Resource ID and Collection ID are required" },
+        { error: "Restaurant ID and Collection ID are required" },
         { status: 400 }
       );
     }
     
-    const result = await db.insert(collectionResources).values({
-      resourceId,
+    const result = await db.insert(restaurantCollections).values({
+      restaurantId,
       collectionId,
     }).returning();
     
